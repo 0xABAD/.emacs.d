@@ -1,0 +1,7 @@
+# Ignore everything
+/*
+
+# White-listed files
+!.gitignore
+!init.el
+!lisp/
