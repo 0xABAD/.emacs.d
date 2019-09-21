@@ -186,7 +186,7 @@ call 'cargo fmt'."
             (comma-mode-override
              (define-key newmap (kbd "c d") 'omnisharp-go-to-definition)
              (define-key newmap (kbd "c f") 'omnisharp-find-usages-with-ido)
-             (define-key newmap (kbd "c F") 'omnisharp-find-implementations-with-ido)))
+             (define-key newmap (kbd "c F") 'omnisharp-find-implementations-with-ido))))
 
 (use-package rust-mode
   :ensure t
@@ -205,8 +205,11 @@ call 'cargo fmt'."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'rust-extra)
-(require 'drillops)
 (require 'hail-hydra)
+
+(when (eq system-type 'windows-nt)
+  (require 'windows)
+  (require 'drillops))
 
 ;; ====================> BEG COMMA-MODE KEYMAP DEFINITIONS <====================
 
