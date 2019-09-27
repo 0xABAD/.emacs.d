@@ -2,6 +2,7 @@
 
 (require 'ivy)
 (require 'windows)
+(require 'omnisharp)
 
 (defun drillops-services ()
   "List Automation DrillOps services in the mini-buffer and selecting one
