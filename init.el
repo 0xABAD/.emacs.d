@@ -193,7 +193,9 @@ call 'cargo fmt'."
   :init
   (add-hook 'rust-mode-hook
             (comma-mode-override
-             (define-key newmap (kbd "g f") 'cargo-format)))
+             (define-key newmap (kbd "g f") 'rust-format-buffer)
+             (define-key newmap (kbd "g c") 'rust-compile)
+             (define-key newmap (kbd "g t") 'rust-test)))
   :bind (:map rust-mode-map
               ("M-q" . self-format-comment)))
 
