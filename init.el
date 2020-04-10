@@ -33,6 +33,7 @@
 (global-hl-line-mode 1)
 (global-set-key (kbd "M-/") 'hippie-expand)
 (setq apropos-do-all 1)
+(setq-default line-spacing 0.2)
 (setq-default indent-tabs-mode nil)
 (setq show-paren-when-point-inside-paren t)
 (setq-default tab-width 4)
