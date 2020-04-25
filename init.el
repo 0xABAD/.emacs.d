@@ -10,11 +10,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
-(menu-bar-mode -1)
-(add-to-list 'default-frame-alist '(width  . 140))
-(add-to-list 'default-frame-alist '(height . 60))
+(menu-bar-mode 1)
+(add-to-list 'default-frame-alist '(width  . 185))
+(add-to-list 'default-frame-alist '(height . 75))
 (add-to-list 'default-frame-alist '(top . 25))
-(add-to-list 'default-frame-alist '(left . 350))
+(add-to-list 'default-frame-alist '(left . 80))
 (setq visible-bell nil)
 (setq ring-bell-function 'ignore)
 
@@ -331,6 +331,6 @@ call 'cargo fmt'."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 102 :width normal)))))
+ '(default ((t (:family "Menlo" :foundry "outline" :slant normal :weight normal :height 120 :width normal)))))
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
