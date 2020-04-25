@@ -200,6 +200,13 @@ call 'cargo fmt'."
   :bind (:map rust-mode-map
               ("M-q" . self-format-comment)))
 
+;; This package makes many commands work on Mac OSX
+;; emacs variables don't agree with the shell's variables.
+(use-package exec-path-from-shell
+  :ensure t
+  :init
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -299,7 +306,7 @@ call 'cargo fmt'."
  '(magit-diff-use-overlays nil)
  '(package-selected-packages
    (quote
-    (hydra ivy-rich all-the-icons-dired doom-modeline doom-themes go-imenu omnisharp yaml-mode toml-mode counsel ace-window which-key rust-mode cmake-mode js2-mode lua-mode magit magit-popup go-mode go-scratch quickrun kaolin-theme use-package cargo csharp-mode highlight-numbers highlight-quoted monokai-theme base16-theme)))
+    (exec-path-from-shell hydra ivy-rich all-the-icons-dired doom-modeline doom-themes go-imenu omnisharp yaml-mode toml-mode counsel ace-window which-key rust-mode cmake-mode js2-mode lua-mode magit magit-popup go-mode go-scratch quickrun kaolin-theme use-package cargo csharp-mode highlight-numbers highlight-quoted monokai-theme base16-theme)))
  '(pos-tip-background-color "#A6E22E")
  '(pos-tip-foreground-color "#272822")
  '(show-paren-mode t)
