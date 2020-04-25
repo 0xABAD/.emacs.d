@@ -247,6 +247,10 @@ call 'cargo fmt'."
 
 ;; ====================> END COMMA-MODE KEYMAP DEFINITIONS <====================
 
+;; Setup Python properly when running on Mac OSX
+(when (eq system-type 'darwin)
+  (setq python-shell-interpreter "python3"))
+
 
 ;; END: Stays within init.el
 
