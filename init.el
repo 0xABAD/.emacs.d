@@ -221,6 +221,13 @@ call 'cargo fmt'."
   (require 'windows)
   (require 'drillops))
 
+;; MacOS specific setups
+(when (eq system-type 'darwin)
+  (setq python-shell-interpreter "python3")
+  (setq mac-command-modifier 'meta)
+  (setq mac-option-modifier 'super))
+
+
 ;; ====================> BEG COMMA-MODE KEYMAP DEFINITIONS <====================
 
 (define-key comma-mode-map (kbd "c g")   'self-grep-symbol-at-point)
@@ -246,11 +253,6 @@ call 'cargo fmt'."
 (define-key comma-mode-map (kbd "c v")   'hydra-scroll/body)
 
 ;; ====================> END COMMA-MODE KEYMAP DEFINITIONS <====================
-
-;; Setup Python properly when running on Mac OSX
-(when (eq system-type 'darwin)
-  (setq python-shell-interpreter "python3"))
-
 
 ;; END: Stays within init.el
 
