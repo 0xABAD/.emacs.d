@@ -155,6 +155,7 @@ call 'cargo fmt'."
   (global-set-key (kbd "C-c g") 'counsel-git)
   (global-set-key (kbd "C-c G") 'counsel-git-grep)
   :bind (:map comma-mode-map
+              ("c f" . counsel-rg)
               ("c m" . counsel-compile)
               ("x F" . counsel-buffer-or-recentf)
               ("x r l" . counsel-bookmark)))
@@ -196,7 +197,8 @@ call 'cargo fmt'."
             (comma-mode-override
              (define-key newmap (kbd "g f") 'rust-format-buffer)
              (define-key newmap (kbd "g c") 'rust-compile)
-             (define-key newmap (kbd "g t") 'rust-test)))
+             (define-key newmap (kbd "g t") 'rust-test)
+             (define-key newmap (kbd "g r") 'rust-run)))
   :bind (:map rust-mode-map
               ("M-q" . self-format-comment)))
 
