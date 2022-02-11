@@ -47,8 +47,8 @@
   (setenv "PATH"
           (concat "~/.local/bin" sep "~/.cargo/bin" sep (getenv "PATH"))))
 
-(grep-apply-setting 'grep-template "rg --vimgrep -i -w <R> <F>")
-(grep-apply-setting 'grep-command "rg --vimgrep -i -w ")
+(grep-apply-setting 'grep-template "rg --vimgrep -w <R> <F>")
+(grep-apply-setting 'grep-command "rg --vimgrep -w ")
 (grep-apply-setting 'grep-use-null-device nil)
 
 (add-hook 'prog-mode-hook 'auto-revert-mode)
@@ -181,15 +181,6 @@ call 'cargo fmt'."
   :bind (:map go-mode-map
               ("M-q" . self-format-comment)))
 
-(use-package csharp-mode
-  :ensure t
-  :init
-  (add-hook 'csharp-mode-hook
-            (comma-mode-override
-             (define-key newmap (kbd "c d") 'omnisharp-go-to-definition)
-             (define-key newmap (kbd "c f") 'omnisharp-find-usages-with-ido)
-             (define-key newmap (kbd "c F") 'omnisharp-find-implementations-with-ido))))
-
 (use-package rust-mode
   :ensure t
   :init
@@ -201,6 +192,23 @@ call 'cargo fmt'."
              (define-key newmap (kbd "g r") 'rust-run)))
   :bind (:map rust-mode-map
               ("M-q" . self-format-comment)))
+
+(use-package lsp-mode
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  (add-hook 'lsp-mode-hook
+            (comma-mode-override
+             (define-key newmap (kbd "c l h h") 'lsp-describe-thing-at-point)
+             (define-key newmap (kbd "c l h s") 'lsp-signature-activate)
+             (define-key newmap (kbd "c l g g") 'lsp-find-definition)
+             (define-key newmap (kbd "c l g r") 'lsp-find-references)
+             (define-key newmap (kbd "c l g t") 'lsp-find-type-definition)))
+  :hook ((go-mode . lsp-deferred)
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+
+(use-package lsp-ivy
+  :commands lsp-ivy-workspace-symbol)
 
 ;; This package makes many commands work on Mac OSX
 ;; emacs variables don't agree with the shell's variables.
@@ -220,8 +228,7 @@ call 'cargo fmt'."
 (require 'hail-hydra)
 
 (when (eq system-type 'windows-nt)
-  (require 'windows)
-  (require 'drillops))
+  (require 'windows))
 
 ;; MacOS specific setups
 (when (eq system-type 'darwin)
@@ -272,57 +279,50 @@ call 'cargo fmt'."
    [unspecified "#f8f8f8" "#ab4642" "#538947" "#f79a0e" "#7cafc2" "#96609e" "#7cafc2" "#383838"] t)
  '(c-basic-offset 4)
  '(c-default-style
-   (quote
-    ((c++-mode . "stroustrup")
+   '((c++-mode . "stroustrup")
      (java-mode . "java")
      (awk-mode . "awk")
-     (other . "stroustrup"))))
+     (other . "stroustrup")))
  '(c-doc-comment-style
-   (quote
-    ((c-mode . javadoc)
+   '((c-mode . javadoc)
      (c++-mode . javadoc)
      (java-mode . javadoc)
-     (pike-mode . autodoc))))
- '(c-hanging-braces-alist (quote set-from-style))
+     (pike-mode . autodoc)))
+ '(c-hanging-braces-alist 'set-from-style)
  '(c-offsets-alist
-   (quote
-    ((extern-lang-open . 0)
+   '((extern-lang-open . 0)
      (namespace-open . 0)
      (extern-lang-close . 0)
      (namespace-close . 0)
      (inextern-lang . 0)
-     (innamespace . 0))))
+     (innamespace . 0)))
  '(column-number-mode t)
  '(compilation-error-regexp-alist
-   (quote
-    (absoft ada aix ant bash borland python-tracebacks-and-caml comma cucumber msft edg-1 edg-2 epc ftnchek iar ibm irix java jikes-file maven jikes-line gcc-include ruby-Test::Unit gnu lcc makepp mips-1 mips-2 msft omake oracle perl php rxp sparc-pascal-file sparc-pascal-line sparc-pascal-example sun sun-ada watcom 4bsd gcov-file gcov-header gcov-nomark gcov-called-line gcov-never-called perl--Pod::Checker perl--Test perl--Test2 perl--Test::Harness weblint guile-file guile-line nim)))
- '(compilation-message-face (quote default))
+   '(absoft ada aix ant bash borland python-tracebacks-and-caml comma cucumber msft edg-1 edg-2 epc ftnchek iar ibm irix java jikes-file maven jikes-line gcc-include ruby-Test::Unit gnu lcc makepp mips-1 mips-2 msft omake oracle perl php rxp sparc-pascal-file sparc-pascal-line sparc-pascal-example sun sun-ada watcom 4bsd gcov-file gcov-header gcov-nomark gcov-called-line gcov-never-called perl--Pod::Checker perl--Test perl--Test2 perl--Test::Harness weblint guile-file guile-line nim))
+ '(compilation-message-face 'default)
  '(fci-rule-color "#373b41")
- '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
+ '(highlight-changes-colors '("#FD5FF0" "#AE81FF"))
  '(highlight-tail-colors
-   (quote
-    (("#3C3D37" . 0)
+   '(("#3C3D37" . 0)
      ("#679A01" . 20)
      ("#4BBEAE" . 30)
      ("#1DB4D0" . 50)
      ("#9A8F21" . 60)
      ("#A75B00" . 70)
      ("#F309DF" . 85)
-     ("#3C3D37" . 100))))
+     ("#3C3D37" . 100)))
  '(hl-sexp-background-color "#efebe9")
  '(inhibit-startup-screen t)
  '(magit-diff-use-overlays nil)
  '(package-selected-packages
-   (quote
-    (exec-path-from-shell hydra ivy-rich all-the-icons-dired doom-modeline doom-themes go-imenu omnisharp yaml-mode toml-mode counsel ace-window which-key rust-mode cmake-mode js2-mode lua-mode magit magit-popup go-mode go-scratch quickrun kaolin-theme use-package cargo csharp-mode highlight-numbers highlight-quoted monokai-theme base16-theme)))
+   '(lsp-ivy lsp-mode bison-mode magit-find-file exec-path-from-shell hydra ivy-rich all-the-icons-dired doom-modeline doom-themes go-imenu omnisharp yaml-mode toml-mode counsel ace-window which-key rust-mode cmake-mode js2-mode lua-mode magit magit-popup go-mode go-scratch quickrun kaolin-theme use-package cargo csharp-mode highlight-numbers highlight-quoted monokai-theme base16-theme))
  '(pos-tip-background-color "#A6E22E")
  '(pos-tip-foreground-color "#272822")
  '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
-   (quote
-    ((20 . "#F92672")
+   '((20 . "#F92672")
      (40 . "#CF4F1F")
      (60 . "#C26C0F")
      (80 . "#E6DB74")
@@ -339,7 +339,7 @@ call 'cargo fmt'."
      (300 . "#299BA6")
      (320 . "#2896B5")
      (340 . "#2790C3")
-     (360 . "#66D9EF"))))
+     (360 . "#66D9EF")))
  '(vc-annotate-very-old-color nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
