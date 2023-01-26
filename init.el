@@ -222,8 +222,11 @@ call 'cargo fmt'."
     (exec-path-from-shell-initialize)))
 
 (use-package org
+  :init
+  (add-hook 'org-mode-hook
+            (comma-mode-override))
   :bind (:map org-mode-map
-              ("C-," . comma-mode)))
+              ("C-," . 'comma-mode)))
 
 (use-package markdown-mode
   :ensure t
