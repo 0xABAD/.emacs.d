@@ -31,7 +31,7 @@
 (prefer-coding-system 'utf-8)
 (show-paren-mode 1)
 (global-hl-line-mode 1)
-(global-set-key (kbd "M-/") 'hippie-expand)
+(global-set-key (kbd "M-/") 'complete-symbol)
 (setq apropos-do-all 1)
 (setq-default line-spacing 0.2)
 (setq-default indent-tabs-mode nil)
@@ -196,13 +196,16 @@ call 'cargo fmt'."
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c l")
+  (setq lsp-diagnostics-provider :none)
   (add-hook 'lsp-mode-hook
             (comma-mode-override
              (define-key newmap (kbd "c l h h") 'lsp-describe-thing-at-point)
              (define-key newmap (kbd "c l h s") 'lsp-signature-activate)
              (define-key newmap (kbd "c l g g") 'lsp-find-definition)
              (define-key newmap (kbd "c l g r") 'lsp-find-references)
-             (define-key newmap (kbd "c l g t") 'lsp-find-type-definition)))
+             (define-key newmap (kbd "c l g t") 'lsp-find-type-definition)
+             (define-key newmap (kbd "c l r r") 'lsp-rename)
+             (define-key newmap (kbd "c l r o") 'lsp-organize-imports)))
   :hook ((go-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
@@ -217,6 +220,15 @@ call 'cargo fmt'."
   :init
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
+
+(use-package org
+  :bind (:map org-mode-map
+              ("C-," . comma-mode)))
+
+(use-package markdown-mode
+  :ensure t
+  :mode ("README\\.md\\'" . gfm-mode)
+  :init (setq markdown-command "multimarkdown"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -294,8 +306,8 @@ call 'cargo fmt'."
      (namespace-open . 0)
      (extern-lang-close . 0)
      (namespace-close . 0)
-     (inextern-lang . 0)
-     (innamespace . 0)))
+     (inextern-lang . +)
+     (innamespace . +)))
  '(column-number-mode t)
  '(compilation-error-regexp-alist
    '(absoft ada aix ant bash borland python-tracebacks-and-caml comma cucumber msft edg-1 edg-2 epc ftnchek iar ibm irix java jikes-file maven jikes-line gcc-include ruby-Test::Unit gnu lcc makepp mips-1 mips-2 msft omake oracle perl php rxp sparc-pascal-file sparc-pascal-line sparc-pascal-example sun sun-ada watcom 4bsd gcov-file gcov-header gcov-nomark gcov-called-line gcov-never-called perl--Pod::Checker perl--Test perl--Test2 perl--Test::Harness weblint guile-file guile-line nim))
