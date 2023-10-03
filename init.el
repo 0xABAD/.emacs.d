@@ -25,7 +25,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'grep)
 (require 'paren)
-(require 'cl)
 (require 'self)
 
 (prefer-coding-system 'utf-8)
@@ -143,32 +142,22 @@ call 'cargo fmt'."
   :ensure t
   :hook (after-init . ivy-rich-mode))
 
-(use-package counsel
-  :ensure t
-  :init
-  (counsel-mode 1)
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "(%d/%d) ")
-  (global-set-key (kbd "C-s") 'swiper)
-  (global-set-key (kbd "C-r") 'swiper)
-  (global-set-key (kbd "C-c g") 'counsel-git)
-  (global-set-key (kbd "C-c G") 'counsel-git-grep)
-  :bind (:map comma-mode-map
-              ("c f" . counsel-rg)
-              ("c m" . counsel-compile)
-              ("x F" . counsel-buffer-or-recentf)
-              ("x r l" . counsel-bookmark)))
-
 (use-package base16-theme :ensure t)
 (use-package doom-themes :ensure t :init (load-theme 'doom-one t))
 (use-package doom-modeline
   :ensure t
   :hook (after-init . doom-modeline-mode))
 
-(use-package js2-mode
-  :ensure t
-  :init (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+;;
+;; Language Checkers:
+;;    Javascript: jshint (npm install -g jshint)
+;;
+(use-package flycheck
+  :ensure t)
+
+;; This is only emacs versions <= 29
+(use-package xref
+  :ensure t)
 
 (use-package go-mode
   :ensure t
@@ -193,10 +182,17 @@ call 'cargo fmt'."
   :bind (:map rust-mode-map
               ("M-q" . self-format-comment)))
 
+;;
+;; Language server setup (M-x lsp-install-server):
+;;    Javascript: ts-ls
+;;
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c l")
   (setq lsp-diagnostics-provider :none)
+  (setq lsp-enable-snippet nil)
+  (setq lsp-go-analyses '((shadow . t)
+                          (simplifycompositelit . :json-false)))
   (add-hook 'lsp-mode-hook
             (comma-mode-override
              (define-key newmap (kbd "c l h h") 'lsp-describe-thing-at-point)
@@ -207,6 +203,8 @@ call 'cargo fmt'."
              (define-key newmap (kbd "c l r r") 'lsp-rename)
              (define-key newmap (kbd "c l r o") 'lsp-organize-imports)))
   :hook ((go-mode . lsp-deferred)
+         (js-mode . lsp-deferred)
+         (js-mode . flycheck-mode)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
@@ -233,6 +231,24 @@ call 'cargo fmt'."
   :mode ("README\\.md\\'" . gfm-mode)
   :init (setq markdown-command '("pandoc" "--from=markdown" "--to=html5")))
 
+(use-package counsel
+  :ensure t
+  :init
+  (counsel-mode 1)
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
+  (global-set-key (kbd "C-s") 'swiper)
+  (global-set-key (kbd "C-r") 'swiper)
+  (global-set-key (kbd "C-c g") 'counsel-git)
+  (global-set-key (kbd "C-c G") 'counsel-git-grep)
+  :bind (:map comma-mode-map
+              ("c f" . counsel-rg)
+              ;; ("c m" . project-compile)
+              ("c m" . counsel-compile)
+              ("x F" . counsel-buffer-or-recentf)
+              ("x r l" . counsel-bookmark)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;                          Personal Code
@@ -250,7 +266,6 @@ call 'cargo fmt'."
   (setq python-shell-interpreter "python3")
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier 'super))
-
 
 ;; ====================> BEG COMMA-MODE KEYMAP DEFINITIONS <====================
 
