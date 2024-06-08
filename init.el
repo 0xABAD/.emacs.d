@@ -122,16 +122,13 @@ call 'cargo fmt'."
   (setq aw-dispatch-always t)
   (global-set-key (kbd "M-o") 'ace-window))
 
+(use-package compat :ensure t)
+(use-package magit :ensure t)
+(use-package hydra :ensure t)
+
 (use-package highlight-numbers
   :ensure t
   :hook (prog-mode . highlight-numbers-mode))
-
-(use-package magit :ensure t)
-(use-package hydra :ensure t)
-(use-package all-the-icons :ensure t)
-(use-package all-the-icons-dired
-  :ensure t
-  :init (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 
 (use-package ivy
   :ensure t
@@ -141,6 +138,13 @@ call 'cargo fmt'."
 (use-package ivy-rich
   :ensure t
   :hook (after-init . ivy-rich-mode))
+
+
+(use-package nerd-icons :ensure t)
+(use-package nerd-icons-ivy-rich :ensure t)
+(use-package nerd-icons-dired
+  :ensure t
+  :init (add-hook 'dired-mode-hook 'nerd-icons-dired-mode))
 
 (use-package base16-theme :ensure t)
 (use-package doom-themes :ensure t :init (load-theme 'doom-one t))
@@ -230,6 +234,10 @@ call 'cargo fmt'."
   :ensure t
   :mode ("README\\.md\\'" . gfm-mode)
   :init (setq markdown-command '("pandoc" "--from=markdown" "--to=html5")))
+
+(use-package mhtml-mode
+    :bind (:map comma-mode-map
+                ("M-o" . ace-window)))
 
 (use-package counsel
   :ensure t
@@ -345,7 +353,7 @@ call 'cargo fmt'."
  '(inhibit-startup-screen t)
  '(magit-diff-use-overlays nil)
  '(package-selected-packages
-   '(lsp-ivy lsp-mode bison-mode magit-find-file exec-path-from-shell hydra ivy-rich all-the-icons-dired doom-modeline doom-themes go-imenu omnisharp yaml-mode toml-mode counsel ace-window which-key rust-mode cmake-mode js2-mode lua-mode magit magit-popup go-mode go-scratch quickrun kaolin-theme use-package cargo csharp-mode highlight-numbers highlight-quoted monokai-theme base16-theme))
+   '(markdown-mode lsp-ivy lsp-mode bison-mode magit-find-file exec-path-from-shell hydra ivy-rich doom-modeline doom-themes go-imenu omnisharp yaml-mode toml-mode counsel ace-window which-key rust-mode cmake-mode js2-mode lua-mode magit magit-popup go-mode go-scratch quickrun kaolin-theme use-package cargo csharp-mode highlight-numbers highlight-quoted monokai-theme base16-theme))
  '(pos-tip-background-color "#A6E22E")
  '(pos-tip-foreground-color "#272822")
  '(show-paren-mode t)
